@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getLesson, getLessonSteps, updateLessonProgress } from '../repository/Repository';
 
@@ -30,7 +30,7 @@ const LessonDetailScreen = () => {
 
   const handleNextStep = async () => { // Funkcja obsługująca przejście do następnego kroku
     const newStep = currentStep + 1;
-    let newProgress = Math.max(((newStep) / steps.length) * 100, 100); // Obliczenie nowego postępu
+    let newProgress = Math.min(((newStep + 1) / steps.length) * 100, 100); // Obliczenie nowego postępu
 
     setCurrentStep(newStep);
     setProgress(newProgress);
@@ -41,7 +41,7 @@ const LessonDetailScreen = () => {
   if (!lesson || steps.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>Pracę nad tą lekcją są w toku!</Text>
+        <Text style={styles.loadingText}>Pracę nad tą lekcją są w toku!</Text>
       </View>
     );
   }
@@ -52,18 +52,24 @@ const LessonDetailScreen = () => {
         <Text style={styles.title}>{lesson.title}</Text>
         <Text style={styles.description}>{steps[currentStep]?.description}</Text>
         <Text style={styles.explanation}>{steps[currentStep]?.explanation}</Text>
-        <Button
-          title="Next"
+        <TouchableOpacity
+          style={[styles.button, currentStep >= steps.length - 1 && styles.buttonDisabled]}
           onPress={handleNextStep}
           disabled={currentStep >= steps.length - 1}
-        />
+          activeOpacity={1}
+        >
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity>
         {currentStep >= steps.length - 1 && (
           <View key={lessonId} style={styles.lessonContainer}>
             <Text style={styles.explanation}>Gratulacje! Ukończyłeś lekcję, przejdź do quizu</Text>
-            <Button
-              title="Start Quiz"
+            <TouchableOpacity
+              style={styles.button}
               onPress={() => navigation.navigate('Quiz', { lessonId })}
-            />
+              activeOpacity={1}
+            >
+              <Text style={styles.buttonText}>Start Quiz</Text>
+            </TouchableOpacity>
           </View>
         )}
       </ScrollView>
@@ -75,15 +81,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f8f8f8',
   },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  loadingText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#888',
+  },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: '#333',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -91,14 +104,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginBottom: 10,
+    color: '#666',
   },
   explanation: {
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20,
+    color: '#666',
   },
   lessonContainer: {
     marginTop: 10,
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#1e90ff',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisabled: {
+    backgroundColor: '#bbb',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

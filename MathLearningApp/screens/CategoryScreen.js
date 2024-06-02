@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getCategories } from '../repository/Repository';
 
@@ -16,35 +16,51 @@ const CategoryScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Wybierz kategorię do nauki</Text>
       {categories.map((category) => (
-        <View style={styles.buttonContainer} key={category.id}> 
-          <Button
+        <TouchableOpacity
           key={category.id}
-          title={category.name}
+          style={styles.buttonContainer}
           onPress={() => navigation.navigate('Lesson', { categoryId: category.id })}
-          />
-      </View>
+          activeOpacity={1}
+        >
+          <Text style={styles.buttonText}>{category.name}</Text>
+        </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f8f8f8',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
     marginBottom: 20,
   },
   buttonContainer: {
-    marginBottom: 8,
+    backgroundColor: '#1e90ff',
+    borderRadius: 8,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

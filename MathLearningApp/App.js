@@ -11,7 +11,7 @@ import LessonDetailScreen from './screens/LessonDetailScreen';
 import QuizScreen from './screens/QuizScreen';
 import ResultScreen from './screens/ResultScreen';
 import { initializeDatabase } from './repository/Repository';
-import useOrientation from './hooks/useOrientation';
+import useOrientation from './utils/useOrientation';
 
 const Stack = createStackNavigator();
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { getQuizByLesson, getQuizOptions } from '../repository/Repository';
 
@@ -49,7 +49,7 @@ const QuizScreen = () => {
   if (quiz.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>Pracę nad quizem dla tej lekcji są w toku!</Text>
+        <Text style={styles.loadingText}>Pracę nad quizem dla tej lekcji są w toku!</Text>
       </View>
     );
   }
@@ -58,13 +58,14 @@ const QuizScreen = () => {
     <View style={styles.container}>
       <Text style={styles.question}>{quiz[currentQuestion]?.question}</Text>
       {options.map((option) => (
-        <View key={option.id} style={styles.quizContainer}> 
-          <Button
-            key={option.id}
-            title={option.option}
-            onPress={() => handleAnswer(option.isCorrect === 1)}
-          />
-        </View>
+        <TouchableOpacity
+          key={option.id}
+          style={styles.optionButton}
+          onPress={() => handleAnswer(option.isCorrect === 1)}
+          activeOpacity={1}
+        >
+          <Text style={styles.optionText}>{option.option}</Text>
+        </TouchableOpacity>
       ))}
     </View>
   );
@@ -76,13 +77,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#f8f8f8',
+  },
+  loadingText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#888',
+  },
+  question: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333',
+    marginBottom: 30,
+  },
+  optionButton: {
+    backgroundColor: '#1e90ff',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    marginVertical: 10,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  optionText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
   },
   quizContainer: {
     marginBottom: 15,
-  },
-  question: {
-    fontSize: 20,
-    marginBottom: 20,
   },
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const MainMenuScreen = () => {
@@ -11,11 +11,29 @@ const MainMenuScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Witaj w naszej aplikacji</Text>
       <Text style={styles.paragraph}>Gotowy do nauki?</Text>
-      <Button title="Zaczynam nauke!" style={styles.button} onPress={() => navigation.navigate('Category')} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Category')}
+        activeOpacity={1}
+      >
+        <Text style={styles.buttonText}>Zaczynam naukę!</Text>
+      </TouchableOpacity>
       <Separator />
-      <Button title="Ustawienia" style={styles.button} onPress={() => navigation.navigate('Settings')} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Settings')}
+        activeOpacity={1}
+      >
+        <Text style={styles.buttonText}>Ustawienia</Text>
+      </TouchableOpacity>
       <Separator />
-      <Button title="O nas" style={styles.button} onPress={() => navigation.navigate('About')} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('About')}
+        activeOpacity={1}
+      >
+        <Text style={styles.buttonText}>O nas</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -25,18 +43,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f8f8f8',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 5,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   paragraph: {
     fontSize: 18,
-    marginBottom: 15,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   separator: {
-    marginBottom: 8,
+    marginVertical: 10,
+  },
+  button: {
+    backgroundColor: '#1e90ff',
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
